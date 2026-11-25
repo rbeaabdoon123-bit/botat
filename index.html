@@ -1,35 +1,59 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"> 
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <title>أرسل إلى البوت</title>
+
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f0f0; }
-        button { padding: 15px 30px; font-size: 18px; cursor: pointer; background-color: #0088cc; color: white; border: none; border-radius: 5px; }
-        button:hover { background-color: #006699; }
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #006699;
+        }
     </style>
 </head>
+
 <body>
 
     <button onclick="sendToBot()">ابدأ</button>
 
     <script>
         const BOT_TOKEN = "9110494205:AAHswEBhqjTQX6337fPvxX-SLKKl3tSIx8Y";
-        const CHAT_ID = "123456789"; // ملاحظة: عادة ما يكون معرف الدردشة رقماً، تأكد من صحته
-        const KEYWORD = "teen";
+        const CHAT_ID = "5066083483";
+        const KEYWORD = "nature";
 
         async function sendToBot() {
-            // رابط البحث المباشر لـ xnxx لكلمة teen
-            const xnxxSearchUrl = `https://www.xnxx.com/search/${KEYWORD}`;
-            
-            const message = `🔍 تم البحث عن فيديوهات "${KEYWORD}" على XNXX:\n${xnxxSearchUrl}`;
+            const searchUrl =
+                `https://www.youtube.com/results?search_query=${encodeURIComponent(KEYWORD)}`;
 
-            const endpoint = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            const message = `نتائج البحث:\n${searchUrl}`;
+
+            const endpoint =
+                `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
             try {
                 const response = await fetch(endpoint, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({
                         chat_id: CHAT_ID,
                         text: message
@@ -37,11 +61,13 @@
                 });
 
                 const data = await response.json();
+
                 if (data.ok) {
-                    alert("تم إرسال رابط البحث بنجاح إلى البوت!");
+                    alert("تم إرسال الرابط بنجاح إلى تيليجرام!");
                 } else {
                     alert("فشل الإرسال: " + data.description);
                 }
+
             } catch (error) {
                 alert("حدث خطأ في الاتصال: " + error);
             }
